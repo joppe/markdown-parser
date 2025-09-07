@@ -1,0 +1,24 @@
+{
+	"name": "markdown-parser",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "src/index.ts",
+	"scripts": {
+		"test": "vitest src",
+		"lint": "biome lint",
+		"format2": "biome format",
+		"format": "biome check --formatter-enabled=true --linter-enabled=false --organize-imports-enabled=true --write ./src"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"typescript": "^5.7.3"
+	},
+	"dependencies": {
+		"vite": "^6.1.1",
+		"vitest": "^3.0.6"
+	}
+}
