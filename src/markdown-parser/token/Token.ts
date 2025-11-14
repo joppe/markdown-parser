@@ -1,25 +1,36 @@
+import type { Position } from '../lexer/Position.ts';
 import type { TokenType } from './TokenType.ts';
 
-class Token {
-	private _tokenType: TokenType;
-	private _literal: string;
+type TokenConstructorProps = {
+	type: TokenType;
+	value: string;
+	position: Position;
+};
 
-	public get tokenType(): TokenType {
-		return this._tokenType;
+export class Token {
+	private _type: TokenType;
+	private _value: string;
+	private _position: Position;
+
+	public get type(): TokenType {
+		return this._type;
 	}
 
-	public get literal(): string {
-		return this._literal;
+	public get value(): string {
+		return this._value;
 	}
 
-	public constructor(tokenType: TokenType, literal: string) {
-		this._tokenType = tokenType;
-		this._literal = literal;
+	public get position(): Position {
+		return this._position;
+	}
+
+	public constructor({ type, value, position }: TokenConstructorProps) {
+		this._type = type;
+		this._value = value;
+		this._position = position;
 	}
 
 	public toString(): string {
-		return `Token(${this._tokenType}, ${this._literal})`;
+		return `Token(${this._type}, ${this._value})`;
 	}
 }
-
-export { Token };

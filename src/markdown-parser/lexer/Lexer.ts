@@ -1,130 +1,228 @@
 import { Token } from '../token/Token.ts';
 import { tokenType } from '../token/TokenType.ts';
-
-const EOF = '\u{0}';
+import { isDigit } from './isDigit.ts';
+import { EOF } from './isEndOfFile.ts';
+import { isNewline } from './isNewline.ts';
+import { isSpecialChar } from './isSpecialChar.ts';
+import { isWhitespace } from './isWhitespace.ts';
+import type { Position } from './Position.ts';
 
 export class Lexer {
 	private input: string;
 	private position: number;
-	private readPosition: number;
-	private char: string;
+	private line: number;
+	private column: number;
 
 	public constructor(input: string) {
 		this.input = input;
 		this.position = 0;
-		this.readPosition = 0;
-		this.char = EOF;
-
-		this.readChar();
+		this.line = 1;
+		this.column = 1;
 	}
 
-	public nextToken(): Token {
-		let token: Token;
+	public getCurrentPosition(): Position {
+		return {
+			line: this.line,
+			column: this.column,
+			offset: this.position,
+		};
+	}
 
-		switch (this.char) {
-			case ' ':
-				token = new Token(tokenType.WS, this.char);
-				break;
-			case '\n':
-				token = new Token(tokenType.EOL, this.char);
-				break;
-			case '#':
-				token = new Token(tokenType.Hash, this.char);
-				break;
-			case '*':
-				token = new Token(tokenType.Asterisk, this.char);
-				break;
-			case '>':
-				token = new Token(tokenType.Gt, this.char);
-				break;
-			case '.':
-				token = new Token(tokenType.Dot, this.char);
-				break;
-			case '-':
-				token = new Token(tokenType.Dash, this.char);
-				break;
-			case '_':
-				token = new Token(tokenType.Underscore, this.char);
-				break;
-			case '~':
-				token = new Token(tokenType.Tilde, this.char);
-				break;
-			case '`':
-				token = new Token(tokenType.Backtick, this.char);
-				break;
-			case '[':
-				token = new Token(tokenType.LBracket, this.char);
-				break;
-			case ']':
-				token = new Token(tokenType.RBracket, this.char);
-				break;
-			case '(':
-				token = new Token(tokenType.LParen, this.char);
-				break;
-			case ')':
-				token = new Token(tokenType.RParen, this.char);
-				break;
-			case '!':
-				token = new Token(tokenType.Exclamation, this.char);
-				break;
-			case EOF:
-				token = new Token(tokenType.EOF, this.char);
-				break;
-			default:
-				if (isDigit(this.char)) {
-					return new Token(tokenType.Int, this.readNumber());
-				}
+	private peek(offset = 0): string {
+		const pos = this.position + offset;
 
-				return new Token(tokenType.Str, this.readString());
+		if (pos < this.input.length) {
+			return this.input[pos] as string;
 		}
 
-		this.readChar();
+		return EOF;
+	}
 
-		return token;
+	private advance(): string {
+		if (this.position >= this.input.length) {
+			return EOF;
+		}
+
+		const char = this.input[this.position] as string;
+
+		this.position += 1;
+
+		if (char === '\n') {
+			this.line += 1;
+			this.column = 1;
+		} else {
+			this.column += 1;
+		}
+
+		return char;
 	}
 
 	private readNumber(): string {
-		const position = this.position;
+		let result = '';
 
-		while (isDigit(this.char)) {
-			this.readChar();
+		while (isDigit(this.peek())) {
+			result += this.advance();
 		}
 
-		return this.input.slice(position, this.position);
+		return result;
 	}
 
-	private readString(): string {
-		const position = this.position;
+	private readText(): string {
+		let result = '';
 
-		while (
-			!isInlineToken(this.char) &&
-			this.char !== EOF &&
-			this.char !== '\n'
-		) {
-			this.readChar();
+		while (this.position < this.input.length) {
+			const char = this.peek();
+
+			if (isNewline(char) || isWhitespace(char) || isSpecialChar(char)) {
+				break;
+			}
+
+			result += this.advance();
 		}
 
-		return this.input.slice(position, this.position);
+		return result;
 	}
 
-	private readChar(): void {
-		if (this.readPosition >= this.input.length) {
-			this.char = EOF;
-		} else {
-			this.char = this.input[this.readPosition] as string;
+	public nextToken(): Token {
+		const char = this.peek();
+		const position = this.getCurrentPosition();
+
+		if (isNewline(char)) {
+			return new Token({
+				type: tokenType.EOL,
+				value: this.advance(),
+				position,
+			});
 		}
 
-		this.position = this.readPosition;
-		this.readPosition += 1;
+		if (isWhitespace(char)) {
+			return new Token({
+				type: tokenType.WS,
+				value: this.advance(),
+				position,
+			});
+		}
+
+		if (char === EOF) {
+			return new Token({
+				type: tokenType.EOF,
+				value: '',
+				position,
+			});
+		}
+
+		switch (char) {
+			case '#':
+				return new Token({
+					type: tokenType.HASH,
+					value: this.advance(),
+					position,
+				});
+			case '*':
+				return new Token({
+					type: tokenType.ASTERISK,
+					value: this.advance(),
+					position,
+				});
+			case '_':
+				return new Token({
+					type: tokenType.UNDERSCORE,
+					value: this.advance(),
+					position,
+				});
+			case '`':
+				return new Token({
+					type: tokenType.BACKTICK,
+					value: this.advance(),
+					position,
+				});
+			case '[':
+				return new Token({
+					type: tokenType.LBRACKET,
+					value: this.advance(),
+					position,
+				});
+			case ']':
+				return new Token({
+					type: tokenType.RBRACKET,
+					value: this.advance(),
+					position,
+				});
+			case '(':
+				return new Token({
+					type: tokenType.LPAREN,
+					value: this.advance(),
+					position,
+				});
+			case ')':
+				return new Token({
+					type: tokenType.RPAREN,
+					value: this.advance(),
+					position,
+				});
+			case '!':
+				return new Token({
+					type: tokenType.EXCLAMATION,
+					value: this.advance(),
+					position,
+				});
+			case '<':
+				return new Token({
+					type: tokenType.LT,
+					value: this.advance(),
+					position,
+				});
+			case '>':
+				return new Token({
+					type: tokenType.GT,
+					value: this.advance(),
+					position,
+				});
+			case '-':
+				return new Token({
+					type: tokenType.DASH,
+					value: this.advance(),
+					position,
+				});
+			case '+':
+				return new Token({
+					type: tokenType.PLUS,
+					value: this.advance(),
+					position,
+				});
+			case '.':
+				return new Token({
+					type: tokenType.DOT,
+					value: this.advance(),
+					position,
+				});
+			case '~':
+				return new Token({
+					type: tokenType.TILDE,
+					value: this.advance(),
+					position,
+				});
+			case '\\':
+				return new Token({
+					type: tokenType.BACKSLASH,
+					value: this.advance(),
+					position,
+				});
+			default: {
+				if (isDigit(char)) {
+					return new Token({
+						type: tokenType.NUMBER,
+						value: this.readNumber(),
+						position,
+					});
+				}
+
+				return new Token({
+					type: tokenType.TEXT,
+					value: this.readText(),
+					position,
+				});
+			}
+		}
 	}
-}
-
-function isDigit(char: string): boolean {
-	return char.match(/\d/) !== null;
-}
-
-const INLINE_TOKENS = ['*', '_', '~', '`', '[', ']', '(', ')', '!'];
-
-function isInlineToken(char: string): boolean {
-	return INLINE_TOKENS.includes(char);
 }

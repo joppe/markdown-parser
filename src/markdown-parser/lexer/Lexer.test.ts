@@ -9,7 +9,11 @@ describe('Lexer', () => {
 			const lexer = new Lexer('Lorem ipsum');
 
 			expect(lexer.nextToken()).toEqual(
-				new Token(tokenType.Str, 'Lorem ipsum'),
+				new Token({
+					type: tokenType.TEXT,
+					value: 'Lorem',
+					position: { line: 1, column: 1, offset: 0 },
+				}),
 			);
 		});
 
@@ -27,52 +31,22 @@ __This will also be bold__
 _You **can** combine them_
 `;
 			const lexer = new Lexer(input);
-			const tokens = [
-				new Token(tokenType.Hash, '#'),
-				new Token(tokenType.WS, ' '),
-				new Token(tokenType.Str, 'Markdown syntax guide'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.Hash, '#'),
-				new Token(tokenType.Hash, '#'),
-				new Token(tokenType.WS, ' '),
-				new Token(tokenType.Str, 'Headers'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Str, 'This text will be italic'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.Str, 'This will also be italic'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Str, 'This text will be bold'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.Str, 'This will also be bold'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.Str, 'You '),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Str, 'can'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.Asterisk, '*'),
-				new Token(tokenType.WS, ' '),
-				new Token(tokenType.Str, 'combine them'),
-				new Token(tokenType.Underscore, '_'),
-				new Token(tokenType.EOL, '\n'),
-				new Token(tokenType.EOF, '\u{0}'),
+			const tokens: Token[] = [
+				new Token({
+					type: tokenType.HASH,
+					value: '#',
+					position: { line: 1, column: 1, offset: 0 },
+				}),
+				new Token({
+					type: tokenType.WS,
+					value: ' ',
+					position: { line: 1, column: 2, offset: 1 },
+				}),
+				new Token({
+					type: tokenType.TEXT,
+					value: 'Markdown',
+					position: { line: 1, column: 3, offset: 2 },
+				}),
 			];
 
 			for (const token of tokens) {

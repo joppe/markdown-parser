@@ -1,47 +1,52 @@
 const EOF = 'EOF';
 const EOL = 'EOL';
 const WS = 'WS';
-const Illegal = 'Illegal';
-const Int = 'Int';
-const Str = 'Str';
-const Hash = 'Hash';
-const Asterisk = 'Asterisk';
-const Gt = 'Gt';
-const Dot = 'Dot';
-const Dash = 'Dash';
-const Underscore = 'Underscore';
-const Tilde = 'Tilde';
-const Backtick = 'Backtick';
-const LBracket = 'LBracket';
-const RBracket = 'RBracket';
-const LParen = 'LParen';
-const RParen = 'RParen';
-const Exclamation = 'Exclamation';
 
-const tokenType = {
+const HASH = 'HASH';
+const ASTERISK = 'ASTERISK';
+const UNDERSCORE = 'UNDERSCORE';
+const BACKTICK = 'BACKTICK';
+const LBRACKET = 'LBRACKET';
+const RBRACKET = 'RBRACKET';
+const LPAREN = 'LPAREN';
+const RPAREN = 'RPAREN';
+const EXCLAMATION = 'EXCLAMATION';
+const GT = 'GT';
+const LT = 'LT';
+const DASH = 'DASH';
+const PLUS = 'PLUS';
+const DOT = 'DOT';
+const TILDE = 'TILDE';
+const BACKSLASH = 'BACKSLASH';
+
+const ILLEGAL = 'ILLEGAL';
+const NUMBER = 'NUMBER';
+const TEXT = 'TEXT';
+
+export const tokenType = {
 	EOF,
 	EOL,
 	WS,
-	Illegal,
 
-	Int,
-	Str,
-
-	Hash,
-	Asterisk,
-	Gt,
-	Dot,
-	Dash,
-	Underscore,
-	Tilde,
-	Backtick,
-	LBracket,
-	RBracket,
-	LParen,
-	RParen,
-	Exclamation,
+	HASH,
+	ASTERISK,
+	UNDERSCORE,
+	BACKTICK,
+	LBRACKET,
+	RBRACKET,
+	LPAREN,
+	RPAREN,
+	EXCLAMATION,
+	GT,
+	LT,
+	DASH,
+	PLUS,
+	DOT,
+	TILDE,
+	BACKSLASH,
+	ILLEGAL,
+	NUMBER,
+	TEXT,
 };
 
-type TokenType = ValueOf<typeof tokenType>;
-
-export { type TokenType, tokenType };
+export type TokenType = ValueOf<typeof tokenType>;
