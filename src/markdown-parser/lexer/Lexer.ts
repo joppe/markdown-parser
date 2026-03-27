@@ -1,11 +1,13 @@
 import { Token } from '../token/Token.ts';
 import { tokenType } from '../token/TokenType.ts';
-import { isDigit } from './isDigit.ts';
-import { EOF } from './isEndOfFile.ts';
-import { isNewline } from './isNewline.ts';
-import { isSpecialChar } from './isSpecialChar.ts';
-import { isWhitespace } from './isWhitespace.ts';
-import type { Position } from './Position.ts';
+import type { Position } from '../types/index.ts';
+import {
+	EOF,
+	isDigit,
+	isNewline,
+	isSpecialChar,
+	isWhitespace,
+} from '../util/char/index.ts';
 
 export class Lexer {
 	private input: string;
