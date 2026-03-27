@@ -1,7 +1,7 @@
-import type { Position } from '../lexer/Position.ts';
+import type { Position } from '../types/index.ts';
 import type { TokenType } from './TokenType.ts';
 
-type TokenConstructorProps = {
+type TokenProps = {
 	type: TokenType;
 	value: string;
 	position: Position;
@@ -24,7 +24,7 @@ export class Token {
 		return this._position;
 	}
 
-	public constructor({ type, value, position }: TokenConstructorProps) {
+	public constructor({ type, value, position }: TokenProps) {
 		this._type = type;
 		this._value = value;
 		this._position = position;

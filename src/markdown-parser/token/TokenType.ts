@@ -27,7 +27,6 @@ export const tokenType = {
 	EOF,
 	EOL,
 	WS,
-
 	HASH,
 	ASTERISK,
 	UNDERSCORE,
