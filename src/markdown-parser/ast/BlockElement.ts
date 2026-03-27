@@ -1,16 +1,19 @@
+import type { Token } from '../token/Token.ts';
 import type { InlineElement } from './InlineElement.ts';
 import { Node } from './Node.ts';
 
 export abstract class BlockElement extends Node {
+	protected _token: Token;
 	protected _children: InlineElement[];
 
 	public get children(): InlineElement[] {
 		return this._children;
 	}
 
-	public constructor(children: InlineElement[]) {
+	public constructor(token: Token, children: InlineElement[]) {
 		super();
 
+		this._token = token;
 		this._children = children;
 	}
 
