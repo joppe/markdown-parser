@@ -18,6 +18,7 @@ const PLUS = 'PLUS';
 const DOT = 'DOT';
 const TILDE = 'TILDE';
 const BACKSLASH = 'BACKSLASH';
+const EQUALS = 'EQUALS';
 
 const ILLEGAL = 'ILLEGAL';
 const NUMBER = 'NUMBER';
@@ -43,6 +44,7 @@ export const tokenType = {
 	DOT,
 	TILDE,
 	BACKSLASH,
+	EQUALS,
 	ILLEGAL,
 	NUMBER,
 	TEXT,
