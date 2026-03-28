@@ -210,6 +210,12 @@ export class Lexer {
 					value: this.advance(),
 					position,
 				});
+			case '=':
+				return new Token({
+					type: tokenType.EQUALS,
+					value: this.advance(),
+					position,
+				});
 			default: {
 				if (isDigit(char)) {
 					return new Token({
