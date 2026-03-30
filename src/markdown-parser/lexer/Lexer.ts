@@ -1,5 +1,4 @@
-import { Token } from '../token/Token.ts';
-import { tokenType } from '../token/TokenType.ts';
+import { Token, tokenType } from '../token/index.ts';
 import type { Position } from '../types/index.ts';
 import {
 	EOF,

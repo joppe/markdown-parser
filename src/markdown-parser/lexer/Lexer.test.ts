@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { Token } from '../token/Token.ts';
-import { tokenType } from '../token/TokenType.ts';
+
+import { Token, tokenType } from '../token/index.ts';
 import { Lexer } from './Lexer.ts';
 
 describe('Lexer', () => {
