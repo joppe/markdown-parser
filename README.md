@@ -53,22 +53,32 @@ inlines
 code_span := `<text>`
 ```
 
-- blocks
-  - quote
-    - blocks
-  - list
-    - blocks
-  - heading
-    - inlines
-  - rule
-  - code
-  - paragraph
-    - inlines
-- inlines
-  - text
-  - link
-  - emphasize
-  - image
-  - span
+Blocks:
+
+- Leaf
+  - Thematic breaks `^\s{0,3}[-_*]{3,}$`
+  - ATX headings `^\s{0,3}#{1,6}\s`
+  - Setext headings (paragraph with a `=` or `-` below (any length))
+  - Indented code blocks
+  - Fenced code blocks
+  - HTML blocks ?
+  - Link reference definitions ?
+  - Paragraphs
+  - Blank lines ?
+- Container
+  - Block quotes
+  - List items
+
+Inline content:
+
+- Code spans
+- Emphasis and strong emphasis
+- Links
+- Images
+- Autolinks ?
+- Raw HTML ?
+- Hard line breaks
+- Soft line breaks
+- Textual content
 
 Indicators of block structure always take precedence over indicators of inline structure.
