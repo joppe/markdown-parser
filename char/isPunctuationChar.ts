@@ -1,0 +1,38 @@
+export const PUNCTUATION_CHARS = [
+  "!",
+  '"',
+  "#",
+  "$",
+  "%",
+  "&",
+  "'",
+  "(",
+  ")",
+  "*",
+  "+",
+  ",",
+  "-",
+  ".",
+  "/",
+  ":",
+  ";",
+  "<",
+  "=",
+  ">",
+  "?",
+  "@",
+  "[",
+  "\\",
+  "]",
+  "^",
+  "_",
+  "`",
+  "{",
+  "|",
+  "}",
+  "~",
+];
+
+export function isPunctuationChar(char: string): boolean {
+  return PUNCTUATION_CHARS.includes(char);
+}
