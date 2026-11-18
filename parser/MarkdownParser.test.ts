@@ -10,6 +10,11 @@ Deno.test("MarkdownParser", async (t) => {
       "***",
       "---",
       "___",
+      "  ___",
+      "   ***",
+      "______",
+      "______   ",
+      "_ _ _",
     ];
 
     for (const input of inputs) {
