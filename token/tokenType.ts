@@ -1,7 +1,7 @@
 const ILLEGAL = "ILLEGAL";
 const EOF = "EOF";
 const EOL = "EOL";
-const WS = "WS";
+const SPACE = "SPACE";
 const TAB = "TAB";
 
 const HASH = "HASH";
@@ -27,7 +27,7 @@ const TEXT = "TEXT";
 export const tokenType = {
   EOF,
   EOL,
-  WS,
+  SPACE,
   TAB,
   HASH,
   ASTERISK,

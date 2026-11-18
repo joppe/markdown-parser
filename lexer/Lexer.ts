@@ -1,4 +1,4 @@
-import { EOF, EOL, isEndOfFile, isEndOfLine, SPACE } from "../char/index.ts";
+import { EOF, EOL, isEndOfLine, isLetter, SPACE } from "../char/index.ts";
 import { Token, tokenType } from "../token/index.ts";
 import { Position } from "./Position.ts";
 
@@ -47,7 +47,7 @@ export class Lexer {
         token = new Token(tokenType.EOF, "EOF");
         break;
       case SPACE:
-        token = new Token(tokenType.WS, " ");
+        token = new Token(tokenType.SPACE, " ");
         break;
       case "#":
         token = new Token(
@@ -152,11 +152,10 @@ export class Lexer {
         );
         break;
       default: {
-        token = new Token(
+        return new Token(
           tokenType.TEXT,
           this.readText(),
         );
-        break;
       }
     }
 
@@ -176,7 +175,7 @@ export class Lexer {
   private readText(): string {
     const position = this._position;
 
-    while (!(isEndOfFile(this._char) || isEndOfLine(this._char))) {
+    while (isLetter(this._char)) {
       this.readChar();
     }
 
@@ -193,7 +192,7 @@ export class Lexer {
     this._position = this._readPosition;
     this._readPosition += 1;
 
-    if (this._char === EOL) {
+    if (isEndOfLine(this._char)) {
       this._line += 1;
       this._column = 1;
     } else {
